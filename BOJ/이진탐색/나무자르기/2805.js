@@ -3,26 +3,28 @@ const filePath =
   process.platform === 'linux' ? '/dev/stdin' : __dirname + '/input.txt';
 const input = fs.readFileSync(filePath).toString().trim().split('\n');
 
-const N = Number(input[0]);
+let [N, M] = input[0].split(' ').map(Number);
 const arr = input[1].split(' ').map(Number);
-let M = Number(input[2]);
 
+let h = 0;
 let start = 1;
 let end = Math.max(...arr);
 
-let result = 0;
 while (start <= end) {
-  let mid = parseInt((start + end) / 2);
   let total = 0;
+  let mid = parseInt((start + end) / 2);
 
   for (const ele of arr) {
-    total += Math.min(mid, ele);
+    if (ele - mid > 0) {
+      total += ele - mid;
+    }
   }
-  if (total <= M) {
-    result = mid;
+  if (total >= M) {
     start = mid + 1;
+    h = mid;
   } else {
     end = mid - 1;
   }
 }
-console.log(result);
+
+console.log(h);
